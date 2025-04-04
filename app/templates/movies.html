@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='movies.css') }}">
+    
+    <title>Domowa biblioteczka</title>
+    
+</head>
+<div>
+    <div id="title-heading">
+        <h2> Add movie: </h2>
+    </div>
+    <form method="POST" action="/movies/">
+        {{ movie_form.hidden_tag() }}
+        <table>
+            {% for field in movie_form if field.widget.input_type != 'hidden' %}
+                <tr>
+                    <th>{{ field.label }} {% if field.flags.required %}*{% endif %}</th>
+                    <td>{{ field }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="Go">
+    </form>
+</div>
+<table>
+    <thead>
+    <th>Title</th>
+    <th>Year of production</th>
+    </thead>
+{% for movie in movies %}
+    <tr>
+        <td><a href="/movies/{{ loop.index }}">{{ movie.title }}</a></td>
+        
+        <td>{{ movie.year }}</td>
+    </tr>
+{% endfor %}
+</table>
+<div>
+    <div id="title-heading">
+        <h2> Add author: </h2>
+    </div>
+    <form method="POST" action="/add_author/">
+        {{ author_form.hidden_tag() }}
+        <table>
+            {% for field in author_form if field.widget.input_type != 'hidden' %}
+                <tr>
+                    <th>{{ field.label }} {% if field.flags.required %}*{% endif %}</th>
+                    <td>{{ field }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="Go">
+    </form>
+</div>
+<table>
+    <thead>
+    <th>Author Name</th>
+    </thead>
+{% for author in authors %}
+    <tr>
+        <td><a href="/authors/{{ loop.index }}">{{ author.name }}</a></td>
+    </tr>
+{% endfor %}
+</table>
+<div>
+    <h3>How to sort?</h3>
+</div>
+        
+<table>
+    <th><a href="/movies?sort_by=title">Title</a></th>
+    <th><a href="/movies?sort_by=year">Year</a></th>
+</table>
+</body>
+</html>
