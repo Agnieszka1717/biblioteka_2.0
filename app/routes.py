@@ -40,7 +40,24 @@ def add_author():
     db.session.commit()
     return redirect(url_for("movies_list"))
 
+@app.route("/rent_movie/<int:movie_id>/", methods=["POST"])
+def rent_movie(movie_id):
+    error = ""
+    active_rent = (MovieRent
+        .query
+        .filter(MovieRent.movie_id==movie_id)
+        .filter(MovieRent.end == None)
+    ).first()
 
+    if not active_rent:
+        new_rent = MovieRent(movie_id=movie_id, start=func.now(), end=None)
+        db.session.add(new_rent)
+    else:
+        active_rent.end = func.now()
+
+    db.session.commit()
+
+    return redirect(url_for("movies_list"))
 
 @app.route("/movies/<int:movie_id>/", methods=["GET", "POST"])
 def movie_details(movie_id):
