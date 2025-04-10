@@ -29,6 +29,7 @@
     <th>Title</th>
     <th>Year of production</th>
     <th>Authors</th>
+    <th>Movie Rented</th>
     </thead>
 {% for movie in movies %}
     <tr>
@@ -37,6 +38,9 @@
         <td>{{ movie.year }}</td>
         <td>
             {{ movie.authors | map(attribute="name") | join(", ") }}
+        </td>
+        <td>
+            {% if movie.rents | selectattr("end", "none") | list | count > 0 %} Yes {% else %} No {% endif %}
         </td>
     </tr>
 {% endfor %}
