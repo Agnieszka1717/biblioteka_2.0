@@ -1,4 +1,5 @@
 from flask import redirect, render_template, request, url_for
+from sqlalchemy import func
 from app import app, db
 from app.forms import AuthorForm, MovieForm, RentForm
 from app.models import Author, Movie, MovieRent
@@ -61,11 +62,13 @@ def rent_movie(movie_id):
 
 @app.route("/movies/<int:movie_id>/", methods=["GET", "POST"])
 def movie_details(movie_id):
-    movie = movies.get(movie_id - 1)
-    form = MovieForm(data=movie)
+    movie = Movie.query.filter(Movie.id==movie_id).first_or_404()
+    form = MovieForm(obj=movie)
 
     if request.method == "POST":
         if form.validate_on_submit():
-            movies.update(movie_id - 1, form.data)
+            movie.title = form.data['title']
+            movie.year = form.data['year']
+            db.session.commit()
         return redirect(url_for("movies_list"))
     return render_template("movie.html", form=form, movie_id=movie_id)
