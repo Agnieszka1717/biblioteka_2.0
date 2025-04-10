@@ -72,3 +72,15 @@ def movie_details(movie_id):
             db.session.commit()
         return redirect(url_for("movies_list"))
     return render_template("movie.html", form=form, movie_id=movie_id)
+
+@app.route("/authors/<int:author_id>/", methods=["GET", "POST"])
+def author_details(author_id):
+    author = Author.query.filter(Author.id==author_id).first_or_404()
+    form = AuthorForm(obj=author)
+
+    if request.method == "POST":
+        if form.validate_on_submit():
+            author.name = form.data['name']
+            db.session.commit()
+        return redirect(url_for("movies_list"))
+    return render_template("author.html", form=form, author_id=author_id)
