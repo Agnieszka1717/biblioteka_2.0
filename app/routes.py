@@ -15,7 +15,9 @@ def movies_list():
     error = ""
     if request.method == "POST":
         if movie_form.validate_on_submit():
-            movie = Movie(title=movie_form.data['title'], year=movie_form.data['year'])
+            movie = Movie(title=movie_form.data['title'],
+                           year=movie_form.data['year'],
+                           authors=movie_form.data['authors'])  
             db.session.add(movie)
             db.session.commit()
         return redirect(url_for("movies_list"))
