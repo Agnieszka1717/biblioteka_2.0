@@ -1,7 +1,7 @@
 from flask import redirect, render_template, request, url_for
 from app import app, db
-from app.forms import AuthorForm, MovieForm
-from app.models import Author, Movie
+from app.forms import AuthorForm, MovieForm, RentForm
+from app.models import Author, Movie, MovieRent
 
 
 def sort_movies(movies_list, sort_by):
@@ -12,6 +12,7 @@ def sort_movies(movies_list, sort_by):
 def movies_list():
     movie_form = MovieForm()
     author_form = AuthorForm()
+    rent_form = RentForm()
     error = ""
     if request.method == "POST":
         if movie_form.validate_on_submit():
@@ -22,10 +23,11 @@ def movies_list():
             db.session.commit()
         return redirect(url_for("movies_list"))
     sort_by = request.args.get('sort_by')
-    movies = Movie.query.all()
+    movie_query = Movie.query.join(MovieRent, Movie.id == MovieRent.movie_id, isouter=True)
+    movies = movie_query.all()
     authors = Author.query.all()
     sort_movies(movies, sort_by)
-    return render_template("movies.html", movie_form=movie_form, author_form=author_form, movies=movies, authors=authors, error=error)
+    return render_template("movies.html", movie_form=movie_form, author_form=author_form, rent_form=rent_form, movies=movies, authors=authors, error=error)
 
 @app.route("/add_author/", methods=["POST"])
 def add_author():

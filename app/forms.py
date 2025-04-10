@@ -18,3 +18,6 @@ class MovieForm(FlaskForm):
 
 class AuthorForm(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
+
+class RentForm(FlaskForm):
+    submit_field = SubmitField('Go', validators=[DataRequired()])

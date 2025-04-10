@@ -30,6 +30,7 @@
     <th>Year of production</th>
     <th>Authors</th>
     <th>Movie Rented</th>
+    <th>Rent/Return</th>
     </thead>
 {% for movie in movies %}
     <tr>
@@ -41,6 +42,11 @@
         </td>
         <td>
             {% if movie.rents | selectattr("end", "none") | list | count > 0 %} Yes {% else %} No {% endif %}
+        </td>
+        <td>
+            <form method="POST" action="/rent_movie/{{ movie.id }}">
+                {{ rent_form.submit_field }}
+            </form>
         </td>
     </tr>
 {% endfor %}
