@@ -5,3 +5,4 @@ ipython
 flask-shell
 flask-wtf
 python-dotenv
+WTForms-SQLAlchemy
