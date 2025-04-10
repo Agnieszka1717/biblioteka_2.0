@@ -4,7 +4,10 @@ body {
     background-size: cover;
 }
 
-table,
+table {
+    margin-bottom: 5px;
+}
+
 th,
 tr,
 td {
@@ -18,4 +21,5 @@ h2 {
 #title-heading {
     background-color: bisque;
     display:inline-block;
+    margin-bottom: 5px;
 }
